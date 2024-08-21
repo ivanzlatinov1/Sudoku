@@ -1,0 +1,16 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    font-family: "Potta One", system-ui;
+    font-weight: 400;
+    font-style: normal;
+    height: 100vh;
+    background-color: #fff;
+    overflow: hidden;
+    user-select: none;
+}
