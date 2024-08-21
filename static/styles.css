@@ -6,11 +6,61 @@
 }
 
 body {
-    font-family: "Potta One", system-ui;
+    font-family: "Potta One", cursive;
     font-weight: 400;
     font-style: normal;
     height: 100vh;
     background-color: #fff;
     overflow: hidden;
     user-select: none;
+}
+
+input {
+    border: 2px solid #2a2a38;
+    color: #6a6a6a;
+}
+
+input:hover,
+input:focus {
+    border-color: hsl(240, 97%, 71%);
+}
+
+a {
+    text-decoration: none;
+    color: unset;
+}
+
+ul {
+    list-style-type: none;
+}
+
+nav {
+    background-color: rgb(255, 255, 255);
+    color: white;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    box-shadow: 5px 2px #6a6a6a;
+    z-index: 99;
+}
+
+.nav-container {
+    max-width: 1280px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    height: 70px;
+}
+
+.logo {
+    font-size: 2rem;
+    color: #00aeef;
+}
+
+.dark-mode {
+    color: #00aeef;
+    font-size: 2rem;
+    cursor: pointer;
 }
