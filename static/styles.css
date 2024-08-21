@@ -59,8 +59,67 @@ nav {
     color: #00aeef;
 }
 
-.dark-mode {
-    color: #00aeef;
-    font-size: 2rem;
+input {
+    visibility: hidden;
+}
+
+label {
+    position: absolute;
+    width: 80px;
+    height: 40px;
+    background-color: hsla(0, 0%, 83%, 0.73);
+    border-radius: 20px;
+    align-self: center;
     cursor: pointer;
+}
+
+.circle {
+    width: 34px;
+    background-color: white;
+    height: 34px;
+    border-radius: 50%;
+    top: 3px;
+    position: absolute;
+    left: 3px;
+    animation: toggleOff 0.4s linear forwards;
+}
+
+.dark-mode {
+    display: inline;
+    position: relative;
+    width: 300px;
+    text-align: center;
+}
+
+
+input:checked + label{
+    background-color: black;
+}
+
+input:checked + label .circle{
+    animation: toggleOn 0.4s linear forwards;
+    background-color: hsla(0, 0%, 83%, 0.73);
+}
+
+@keyframes toggleOn {
+    0%{
+        transform: translate(0px);
+    }
+    100%{
+        transform: translate(40px);
+    }
+}
+
+@keyframes toggleOff {
+    0%{
+        transform: translate(40px);
+    }
+    100%{
+        transform: translate(0px);
+    }
+}
+
+.toggle {
+    display: inline;
+    color: black;
 }
