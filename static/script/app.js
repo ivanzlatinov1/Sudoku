@@ -1,32 +1,13 @@
-const bodyEl = document.querySelector("body");
-const nav = document.querySelector("nav");
-const p = document.querySelector(".toggle");
-const inputEl = document.querySelector("input");
+document.getElementById("dark-mode").addEventListener('click', () => {
+    document.body.classList.toggle('dark');
+    const isDarkMode = document.body.classList.contains('dark');
+    localStorage.setItem('darkmode', isDarkMode);
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', isDarkMode ? '#1a1a2e' : '#fff');
+});
 
-inputEl.checked = JSON.parse(localStorage.getItem("mode"));
-
-function updateColor() {
-    if(inputEl.checked == true)
-    {
-        bodyEl.style.backgroundColor = "#1a1a2e";
-        nav.style.backgroundColor = "#1a1a2e";
-        p.textContent = "White mode:"
-        p.style.color = "white";
-    }
-    else
-    {
-        bodyEl.style.backgroundColor = "white";
-        nav.style.backgroundColor = "white";
-        p.textContent = "Dark mode:"
-        p.style.color = "black";
-    }
+const initialize = () => {
+    const darkMode = JSON.parse(localStorage.getItem('darkmode'));
+    document.body.classList.add(darkMode ? 'dark' : '');
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', darkMode ? '#1a1a2e' : '#fff');
 }
 
-inputEl.addEventListener("input", () => {
-    updateColor();
-    updateLocalStorage();
-})
-
-function updateLocalStorage() {
-    localStorage.setItem("mode", JSON.stringify(inputEl.checked));
-}
