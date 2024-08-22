@@ -8,10 +8,19 @@ document.getElementById("dark-mode").addEventListener('click', () => {
 const nameInput = document.querySelector('#input-name');
 const startScreen = document.querySelector('#start-screen');
 
+let levelIndex = 0;
+let level = CONSTANTS.LEVEL[levelIndex];
+
+document.querySelector('#btn-level').addEventListener('click', (event) => {
+    levelIndex = (levelIndex + 1 > CONSTANTS.LEVEL.length - 1) ? 0 : levelIndex + 1;
+    level = CONSTANTS.LEVEL[levelIndex];
+    event.target.innerHTML = CONSTANTS.LEVEL_NAME[levelIndex];
+})
+
 document.querySelector('#btn-play').addEventListener('click', () => {
     if(nameInput.value.trim().length > 0)
     {
-        alert('start game')
+        alert(`level => ${level}`);
     }
     else
     {
