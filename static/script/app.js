@@ -7,30 +7,16 @@ document.getElementById("dark-mode").addEventListener('click', () => {
 
 const nameInput = document.querySelector('#input-name');
 const startScreen = document.querySelector('#start-screen');
+const gameScreen = document.querySelector('#game-screen');
+
+const playerName = document.querySelector('#player-name');
+const gameLevel = document.querySelector('#game-level');
+const gameTime = document.querySelector('#game-time');
 
 let levelIndex = 0;
 let level = CONSTANTS.LEVEL[levelIndex];
 
-document.querySelector('#btn-level').addEventListener('click', (event) => {
-    levelIndex = (levelIndex + 1 > CONSTANTS.LEVEL.length - 1) ? 0 : levelIndex + 1;
-    level = CONSTANTS.LEVEL[levelIndex];
-    event.target.innerHTML = CONSTANTS.LEVEL_NAME[levelIndex];
-})
-
-document.querySelector('#btn-play').addEventListener('click', () => {
-    if(nameInput.value.trim().length > 0)
-    {
-        alert(`level => ${level}`);
-    }
-    else
-    {
-        nameInput.classList.add('input-err');
-        setTimeout(() => {
-            nameInput.classList.remove('input-err');
-            nameInput.focus();
-        }, 500);
-    }
-});
+let timer = null;
 
 const getGameInfo = () => JSON.parse(localStorage.getItem('game'));
 
@@ -77,11 +63,52 @@ const initializeNumbers = () => {
     }
 
     const btnDelete = document.createElement('div');
+    btnDelete.classList.add('number');
     btnDelete.classList.add('delete');
     btnDelete.id = 'btn-delete';
     btnDelete.textContent = 'X';
     numsDiv.appendChild(btnDelete);
 }
+
+const setPlayerName = (name) => {
+    localStorage.setItem('player_name', name);
+}
+
+const getPlayerName = () => {
+    localStorage.getItem('player_name');
+}
+
+const startGame = () => {
+    startScreen.classList.remove('active');
+    gameScreen.classList.add('active');
+
+    playerName.innerHTML = nameInput.value.trim();
+    setPlayerName(nameInput.value.trim());
+
+
+}
+
+
+document.querySelector('#btn-level').addEventListener('click', (event) => {
+    levelIndex = (levelIndex + 1 > CONSTANTS.LEVEL.length - 1) ? 0 : levelIndex + 1;
+    level = CONSTANTS.LEVEL[levelIndex];
+    event.target.innerHTML = CONSTANTS.LEVEL_NAME[levelIndex];
+})
+
+document.querySelector('#btn-play').addEventListener('click', () => {
+    if(nameInput.value.trim().length > 0)
+    {
+        startGame();
+    }
+    else
+    {
+        nameInput.classList.add('input-err');
+        setTimeout(() => {
+            nameInput.classList.remove('input-err');
+            nameInput.focus();
+        }, 500);
+    }
+});
 
 const initialize = () => {
     const darkMode = JSON.parse(localStorage.getItem('darkmode'));

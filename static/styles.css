@@ -11,7 +11,7 @@
     --black: #000;
 
     --nav-size: 70px;
-    --sudoku-cell-size: 50px;
+    --sudoku-cell-size: 46px;
 
     --border-radius: 10px;
 
@@ -42,8 +42,8 @@
 body {
     font-family: "Potta One", cursive;
     background-color: var(--bg-body);
-    overflow-x: hidden;
     user-select: none;
+    overflow: hidden;
 }
 
 input {
@@ -302,3 +302,25 @@ nav {
     cursor: pointer;
 }
 
+.numbers {
+    margin-top: var(--space-y);
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 5px;
+}
+
+.number {
+    height: var(--sudoku-cell-size);
+    border-radius: var(--border-radius);
+    background-color: var(--bg-main);
+    color: var(--color-txt);
+    display: grid;
+    place-items: center;
+    font-size: var(--font-size);
+    cursor: pointer;
+}
+
+.delete {
+    background-color: var(--red);
+    color: var(--white);
+}
