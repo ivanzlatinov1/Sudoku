@@ -85,6 +85,10 @@ const showTime = (seconds) => {
    return new Date(seconds * 1000).toISOString().substr(11, 8);
 }
 
+const initializeSudoku = () => {
+    
+}
+
 const startGame = () => {
     startScreen.classList.remove('active');
     gameScreen.classList.add('active');
@@ -105,6 +109,14 @@ const startGame = () => {
     }, 1000)
 }
 
+const returnToStartScreen = () => {
+    clearInterval(timer);
+    pause = false;
+    seconds = 0;
+    startScreen.classList.add('active');
+    gameScreen.classList.remove('active');
+    pauseScreen.classList.remove('active');
+}
 
 document.querySelector('#btn-level').addEventListener('click', (event) => {
     levelIndex = (levelIndex + 1 > CONSTANTS.LEVEL.length - 1) ? 0 : levelIndex + 1;
@@ -135,6 +147,10 @@ document.querySelector('.pause-btn').addEventListener('click', () => {
 document.querySelector('#btn-resume').addEventListener('click', () => {
     pauseScreen.classList.remove('active');
     pause = false;
+});
+
+document.querySelector('#btn-new-game').addEventListener('click', () => {
+    returnToStartScreen();
 });
 
 const initialize = () => {
