@@ -5,6 +5,8 @@ document.getElementById("dark-mode").addEventListener('click', () => {
     document.querySelector('meta[name="theme-color"]').setAttribute('content', isDarkMode ? '#1a1a2e' : '#fff');
 });
 
+const cells = document.querySelectorAll('.main-grid-cell');
+
 const nameInput = document.querySelector('#input-name');
 const startScreen = document.querySelector('#start-screen');
 
@@ -34,6 +36,21 @@ document.querySelector('#btn-play').addEventListener('click', () => {
 
 const getGameInfo = () => JSON.parse(localStorage.getItem('game'));
 
+const initializeGameGrid = () => {
+    let index = 0;
+    for(let i = 0; i < Math.pow(CONSTANTS.GRID_SIZE, 2); i++)
+    {
+        let row = Math.floor(i / CONSTANTS.GRID_SIZE);
+        let col = i % CONSTANTS.GRID_SIZE;
+        if(row  === 2 || row === 5)
+             cells[index].style.marginBottom = '10px';
+        if(col === 2 || col === 5)
+            cells[index].style.marginRight = '10px';
+        
+        index++;
+    }
+}
+
 const initialize = () => {
     const darkMode = JSON.parse(localStorage.getItem('darkmode'));
     document.body.classList.add(darkMode ? 'dark' : 'light');
@@ -42,6 +59,8 @@ const initialize = () => {
     const game = getGameInfo();
 
     document.querySelector('#btn-continue').style.display = game ? 'grid' : 'none';
+
+    initializeGameGrid();
 }
 
 initialize();
