@@ -8,6 +8,7 @@ document.getElementById("dark-mode").addEventListener('click', () => {
 const nameInput = document.querySelector('#input-name');
 const startScreen = document.querySelector('#start-screen');
 const gameScreen = document.querySelector('#game-screen');
+const pauseScreen = document.querySelector('#pause-screen')
 
 const playerName = document.querySelector('#player-name');
 const gameLevel = document.querySelector('#game-level');
@@ -124,6 +125,16 @@ document.querySelector('#btn-play').addEventListener('click', () => {
             nameInput.focus();
         }, 500);
     }
+});
+
+document.querySelector('.pause-btn').addEventListener('click', () => {
+    pauseScreen.classList.add('active');
+    pause = true;
+});
+
+document.querySelector('#btn-resume').addEventListener('click', () => {
+    pauseScreen.classList.remove('active');
+    pause = false;
 });
 
 const initialize = () => {

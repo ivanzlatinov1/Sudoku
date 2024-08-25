@@ -145,7 +145,11 @@ nav {
     transform: translateX(0);
 }
 
-.start-screen>*+* {
+.start-screen > * + * {
+    margin-top: 20px;
+}
+
+.pause-screen > * + * {
     margin-top: 20px;
 }
 
@@ -323,4 +327,34 @@ nav {
 .delete {
     background-color: var(--red);
     color: var(--white);
+}
+
+.pause-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-body);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    display: none;
+}
+
+.pause-screen.active {
+    display: flex;
+}
+
+.pause-screen.active .btn{
+    animation: zoom 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes zoom {
+    0% {
+        transform: scale(3);
+    }
+    100% {
+        transform: scale(1);
+    }
 }
