@@ -5,8 +5,6 @@ document.getElementById("dark-mode").addEventListener('click', () => {
     document.querySelector('meta[name="theme-color"]').setAttribute('content', isDarkMode ? '#1a1a2e' : '#fff');
 });
 
-const cells = document.querySelectorAll('.main-grid-cell');
-
 const nameInput = document.querySelector('#input-name');
 const startScreen = document.querySelector('#start-screen');
 
@@ -36,6 +34,19 @@ document.querySelector('#btn-play').addEventListener('click', () => {
 
 const getGameInfo = () => JSON.parse(localStorage.getItem('game'));
 
+const createCells = () => {
+   const sudokuGrid = document.querySelector('.main-sudoku-grid');
+   for(let i = 1; i <= 81; i++)
+   {
+        const cell = document.createElement('div');
+        cell.classList.add('main-grid-cell');
+        sudokuGrid.appendChild(cell);
+   }
+}
+
+createCells();
+const cells = document.querySelectorAll('.main-grid-cell');
+
 const initializeGameGrid = () => {
     let index = 0;
     for(let i = 0; i < Math.pow(CONSTANTS.GRID_SIZE, 2); i++)
@@ -43,12 +54,33 @@ const initializeGameGrid = () => {
         let row = Math.floor(i / CONSTANTS.GRID_SIZE);
         let col = i % CONSTANTS.GRID_SIZE;
         if(row  === 2 || row === 5)
-             cells[index].style.marginBottom = '10px';
+        {
+            cells[index].style.marginBottom = '10px';
+        }
         if(col === 2 || col === 5)
+        {
             cells[index].style.marginRight = '10px';
-        
+        }
+
         index++;
     }
+}
+
+const initializeNumbers = () => {
+    const numsDiv = document.querySelector('.numbers');
+    for(let i = 0; i < 9; i++)
+    {
+        const num = document.createElement('div');
+        num.classList.add('number');
+        num.textContent = i + 1;
+        numsDiv.appendChild(num);
+    }
+
+    const btnDelete = document.createElement('div');
+    btnDelete.classList.add('delete');
+    btnDelete.id = 'btn-delete';
+    btnDelete.textContent = 'X';
+    numsDiv.appendChild(btnDelete);
 }
 
 const initialize = () => {
@@ -61,6 +93,7 @@ const initialize = () => {
     document.querySelector('#btn-continue').style.display = game ? 'grid' : 'none';
 
     initializeGameGrid();
+    initializeNumbers();
 }
 
 initialize();

@@ -268,3 +268,37 @@ nav {
     grid-template-columns: 1fr 1fr;
     gap: 10px;
 }
+
+.main-game-info-box {
+    height: 45px;
+    background-color: var(--bg-main);
+    color: var(--color-txt);
+    border-radius: var(--border-radius);
+    display: grid;
+    place-items: center;
+    padding: 0 20px;
+    font-size: var(--font-size);
+}
+
+.main-game-info-time {
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    padding-left: 2rem;
+    margin-bottom: auto;
+}
+
+.pause-btn {
+    position: absolute;
+    right: 10px;
+    height: 30px;
+    width: 50px;
+    border-radius: var(--border-radius);
+    background-color: var(--blue);
+    color: var(--white);
+    font-size: var(--font-size);
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+}
+
