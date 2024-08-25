@@ -21,6 +21,9 @@ let timer = null;
 let pause = false;
 let seconds = 0;
 
+let sudokuGame = undefined;
+let sudokuAnswer = undefined;
+
 const getGameInfo = () => JSON.parse(localStorage.getItem('game'));
 
 const createCells = () => {
@@ -85,8 +88,33 @@ const showTime = (seconds) => {
    return new Date(seconds * 1000).toISOString().substr(11, 8);
 }
 
+const clearSudoku = () => {
+    for(let i = 0; i < Math.pow(CONSTANTS.GRID_SIZE, 2); i++) {
+        cells[i].innerHTML = '';
+        cells[i].classList.remove('filled');
+        cells[i].classList.remove('selected');
+    }
+}
+
 const initializeSudoku = () => {
-    
+    clearSudoku();
+
+    sudokuGame = generateSudoku(level);
+    sudokuAnswer = [...sudokuGame.question];
+
+    console.table(sudokuAnswer);
+
+    for(let i = 0; i < Math.pow(CONSTANTS.GRID_SIZE, 2); i++) {
+        let row = Math.floor(i / CONSTANTS.GRID_SIZE);
+        let col = i % CONSTANTS.GRID_SIZE;
+
+        cells[i].setAttribute('data-value', sudokuGame.question[row][col]);
+
+        if(sudokuGame.question[row][col] !== 0) {
+            cells[i].classList.add('filled');
+            cells[i].innerHTML = sudokuGame.question[row][col];
+        }
+    }
 }
 
 const startGame = () => {
@@ -99,6 +127,7 @@ const startGame = () => {
     gameLevel.innerHTML = CONSTANTS.LEVEL_NAME[levelIndex];
 
     seconds = 0;
+    showTime(seconds);
 
     timer = setInterval(() => {
         if(!pause)
@@ -127,6 +156,7 @@ document.querySelector('#btn-level').addEventListener('click', (event) => {
 document.querySelector('#btn-play').addEventListener('click', () => {
     if(nameInput.value.trim().length > 0)
     {
+        initializeSudoku();
         startGame();
     }
     else

@@ -44,7 +44,7 @@ const is3x3BoxCorrect = (grid, boxRow, boxCol, value) => {
 const isCorrect = (grid, row, col, value) => {
     return isColumnCorrect(grid, col, value)
         && isRowCorrect(grid, row, value)
-        && is3x3BoxCorrect(gird, row - row % 3, col - col % 3, value)
+        && is3x3BoxCorrect(grid, row - row % 3, col - col % 3, value)
         && value !== CONSTANTS.UNASSIGNED;
 }
 
@@ -99,7 +99,7 @@ const sudokuCreate = (grid) => {
 
     numberList.forEach((num, i) => {
         if (isCorrect(grid, row, col, num)) {
-            gird[row][col] = num;
+            grid[row][col] = num;
 
             if (isGameSuccessful(grid)) {
                 return true;
