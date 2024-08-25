@@ -17,6 +17,8 @@ let levelIndex = 0;
 let level = CONSTANTS.LEVEL[levelIndex];
 
 let timer = null;
+let pause = false;
+let seconds = 0;
 
 const getGameInfo = () => JSON.parse(localStorage.getItem('game'));
 
@@ -78,6 +80,10 @@ const getPlayerName = () => {
     localStorage.getItem('player_name');
 }
 
+const showTime = (seconds) => {
+   return new Date(seconds * 1000).toISOString().substr(11, 8);
+}
+
 const startGame = () => {
     startScreen.classList.remove('active');
     gameScreen.classList.add('active');
@@ -85,7 +91,17 @@ const startGame = () => {
     playerName.innerHTML = nameInput.value.trim();
     setPlayerName(nameInput.value.trim());
 
+    gameLevel.innerHTML = CONSTANTS.LEVEL_NAME[levelIndex];
 
+    seconds = 0;
+
+    timer = setInterval(() => {
+        if(!pause)
+        {
+            seconds += 1;
+            gameTime.innerHTML = showTime(seconds);
+        }
+    }, 1000)
 }
 
 
