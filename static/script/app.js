@@ -24,6 +24,8 @@ let seconds = 0;
 let sudokuGame = undefined;
 let sudokuAnswer = undefined;
 
+let selectedCell = -1;
+
 const getGameInfo = () => JSON.parse(localStorage.getItem('game'));
 
 const createCells = () => {
@@ -179,7 +181,7 @@ const resetBackground = () => {
 const initCellsEvent = () => {
     cells.forEach((el, index) => {
         el.addEventListener('click', () => {
-            if(el.classList.contains('filled')) {
+            if (!el.classList.contains('filled')) {
                 cells.forEach(el => el.classList.remove('selected'));
 
                 selectedCell = index;
@@ -187,6 +189,87 @@ const initCellsEvent = () => {
                 el.classList.add('selected');
                 resetBackground();
                 hoverBackground(index);
+            }
+        });
+    });
+}
+
+const checkError = (value) => {
+    const addError = (cell) => {
+        if (parseInt(cell.getAttribute('data-value')) != value) {
+            cell.classList.add('err');
+            cell.classList.add('cell-err');
+            setTimeout(() => {
+                cell.classList.remove('cell-err');
+            }, 500)
+        }
+    }
+
+    let index = selectedCell;
+
+    let row = Math.floor(index / CONSTANTS.GRID_SIZE);
+    let col = index % CONSTANTS.GRID_SIZE;
+
+    let boxStartRow = row - row % 3;
+    let boxStartCol = col - col % 3;
+
+    for (let i = 0; i < CONSTANTS.BOX_SIZE; i++) {
+        for (let j = 0; j < CONSTANTS.BOX_SIZE; j++) {
+            let cell = cells[9 * (boxStartRow + i) + (boxStartCol + j)];
+            if (!cell.classList.contains('selected')) {
+                addError(cell);
+            }
+        }
+    }
+
+    let step = 9;
+    while (index - step >= 0) {
+        addError(cells[index - step]);
+        step += 9;
+    }
+
+    step = 9;
+    while (index + step < 81) {
+        addError(cells[index + step]);
+        step += 9;
+    }
+
+    step = 1;
+    while (index - step >= row * 9) {
+        addError(cells[index - step]);
+        step += 1;
+    }
+
+    step = 1;
+    while (index + step < row * 9 + 9) {
+        addError(cells[index + step]);
+        step += 1;
+    }
+}
+
+const removeError = () => cells.forEach(el => el.classList.remove('err'));
+
+const numberInputs = document.querySelectorAll('.number');
+
+const initializeNumbersInputEvent = () => {
+    numberInputs.forEach((el, index) => {
+        el.addEventListener('click', () => {
+            if(!cells[selectedCell].classList.contains('filled')) {
+                cells[selectedCell].innerHTML = index + 1;
+                cells[selectedCell].setAttribute('data-value', index + 1);
+
+                let row = Math.floor(selectedCell / CONSTANTS.GRID_SIZE);
+                let col = selectedCell % CONSTANTS.GRID_SIZE;
+                sudokuAnswer[row][col] = index + 1;
+
+                removeError();
+                checkError(index + 1);
+                cells[selectedCell].classList.add('zoom');
+                setTimeout(() => {
+                    cells[selectedCell].classList.remove('zoom');
+                }, 500);
+
+
             }
         });
     });
@@ -247,6 +330,14 @@ const initialize = () => {
     initializeGameGrid();
     initializeNumbers();
     initCellsEvent();
+    initializeNumbersInputEvent();
+
+    if(getPlayerName()) {
+        nameInput.value = getPlayerName();
+    }
+    else {
+        nameInput.focus();
+    }
 }
 
 initialize();

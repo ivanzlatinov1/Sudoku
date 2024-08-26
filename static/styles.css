@@ -40,14 +40,14 @@
 }
 
 body {
-    font-family: "Potta One", cursive;
+    font-family: "Potta One", cursive, system-ui;
     background-color: var(--bg-body);
     user-select: none;
     overflow: hidden;
 }
 
 input {
-    font-family: "Potta One", cursive;
+    font-family: "Potta One", cursive, system-ui;
     border: 2px solid var(--bg-main);
     color: var(--color-txt);
 }
