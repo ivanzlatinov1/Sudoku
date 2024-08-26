@@ -102,6 +102,9 @@ const initializeSudoku = () => {
     sudokuGame = generateSudoku(level);
     sudokuAnswer = [...sudokuGame.question];
 
+    seconds = 0;
+    saveGameInfo();
+
     console.table(sudokuAnswer);
 
     for (let i = 0; i < Math.pow(CONSTANTS.GRID_SIZE, 2); i++) {
@@ -117,24 +120,30 @@ const initializeSudoku = () => {
     }
 }
 
-const startGame = () => {
-    startScreen.classList.remove('active');
-    gameScreen.classList.add('active');
+const loadSudoku = () => {
+    let game = getGameInfo();
 
-    playerName.innerHTML = nameInput.value.trim();
-    setPlayerName(nameInput.value.trim());
+    gameLevel.innerHTML = CONSTANTS.LEVEL_NAME[game.level];
 
-    gameLevel.innerHTML = CONSTANTS.LEVEL_NAME[levelIndex];
+    sudokuGame = game.sudokuGame;
 
-    seconds = 0;
-    showTime(seconds);
+    sudokuAnswer = sudokuGame.answer;
 
-    timer = setInterval(() => {
-        if (!pause) {
-            seconds += 1;
-            gameTime.innerHTML = showTime(seconds);
+    seconds = game.seconds;
+    gameTime.innerHTML = showTime(seconds);
+
+    levelIndex = game.level;
+
+    for (let i = 0; i < Math.pow(CONSTANTS.GRID_SIZE, 2); i++) {
+        let row = Math.floor(i / CONSTANTS.GRID_SIZE);
+        let col = i % CONSTANTS.GRID_SIZE;
+        
+        cells[i].setAttribute('data-value', sudokuAnswer[row][col]);
+        cells[i].innerHTML = sudokuAnswer[row][col] !== 0 ? sudokuAnswer[row][col] : '';
+        if (sudokuGame.question[row][col] !== 0) {
+            cells[i].classList.add('filled');
         }
-    }, 1000)
+    }
 }
 
 const hoverBackground = (index) => {
@@ -194,6 +203,27 @@ const initCellsEvent = () => {
             }
         });
     });
+}
+
+
+const startGame = () => {
+    startScreen.classList.remove('active');
+    gameScreen.classList.add('active');
+
+    playerName.innerHTML = nameInput.value.trim();
+    setPlayerName(nameInput.value.trim());
+
+    gameLevel.innerHTML = CONSTANTS.LEVEL_NAME[levelIndex];
+
+    seconds = 0;
+    showTime(seconds);
+
+    timer = setInterval(() => {
+        if (!pause) {
+            seconds += 1;
+            gameTime.innerHTML = showTime(seconds);
+        }
+    }, 1000)
 }
 
 const checkError = (value) => {
@@ -291,6 +321,8 @@ const initializeNumbersInputEvent = () => {
                 let col = selectedCell % CONSTANTS.GRID_SIZE;
                 sudokuAnswer[row][col] = index + 1;
 
+                saveGameInfo();
+
                 removeError();
                 checkError(index + 1);
                 cells[selectedCell].classList.add('zoom');
@@ -328,6 +360,19 @@ document.querySelector('#btn-play').addEventListener('click', () => {
         startGame();
     }
     else {
+        nameInput.classList.add('input-err');
+        setTimeout(() => {
+            nameInput.classList.remove('input-err');
+            nameInput.focus();
+        }, 500);
+    }
+});
+
+document.querySelector('#btn-continue').addEventListener('click', () => {
+    if (nameInput.value.trim().length > 0) {
+        loadSudoku();
+        startGame();
+    } else {
         nameInput.classList.add('input-err');
         setTimeout(() => {
             nameInput.classList.remove('input-err');
