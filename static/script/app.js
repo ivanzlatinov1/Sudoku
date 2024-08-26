@@ -40,21 +40,6 @@ const createCells = () => {
 createCells();
 const cells = document.querySelectorAll('.main-grid-cell');
 
-const initializeGameGrid = () => {
-    let index = 0;
-    for (let i = 0; i < Math.pow(CONSTANTS.GRID_SIZE, 2); i++) {
-        let row = Math.floor(i / CONSTANTS.GRID_SIZE);
-        let col = i % CONSTANTS.GRID_SIZE;
-        if (row === 2 || row === 5) {
-            cells[index].style.marginBottom = '10px';
-        }
-        if (col === 2 || col === 5) {
-            cells[index].style.marginRight = '10px';
-        }
-
-        index++;
-    }
-}
 
 const initializeNumbers = () => {
     const numsDiv = document.querySelector('.numbers');
@@ -71,6 +56,24 @@ const initializeNumbers = () => {
     btnDelete.id = 'btn-delete';
     btnDelete.textContent = 'X';
     numsDiv.appendChild(btnDelete);
+}
+
+initializeNumbers();
+
+const initializeGameGrid = () => {
+    let index = 0;
+    for (let i = 0; i < Math.pow(CONSTANTS.GRID_SIZE, 2); i++) {
+        let row = Math.floor(i / CONSTANTS.GRID_SIZE);
+        let col = i % CONSTANTS.GRID_SIZE;
+        if (row === 2 || row === 5) {
+            cells[index].style.marginBottom = '10px';
+        }
+        if (col === 2 || col === 5) {
+            cells[index].style.marginRight = '10px';
+        }
+
+        index++;
+    }
 }
 
 const setPlayerName = (name) => {
@@ -196,7 +199,7 @@ const initCellsEvent = () => {
 
 const checkError = (value) => {
     const addError = (cell) => {
-        if (parseInt(cell.getAttribute('data-value')) != value) {
+        if (parseInt(cell.getAttribute('data-value')) === value) {
             cell.classList.add('err');
             cell.classList.add('cell-err');
             setTimeout(() => {
@@ -328,7 +331,6 @@ const initialize = () => {
     document.querySelector('#btn-continue').style.display = game ? 'grid' : 'none';
 
     initializeGameGrid();
-    initializeNumbers();
     initCellsEvent();
     initializeNumbersInputEvent();
 
