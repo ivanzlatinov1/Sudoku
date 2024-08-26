@@ -1,5 +1,6 @@
 :root {
     --bg-main: #f0f2f5;
+    --bg-main-opacity: rgba(165, 165, 165, 0.552);
     --bg-body: #fff;
     --color-txt: #000;
     --filled-color: #000;
@@ -26,6 +27,7 @@
 
 .dark {
     --bg-main: #2a2a38;
+    --bg-main-opacity: hsla(240, 14%, 19%, 0.536);
     --bg-body: #1a1a2e;
     --color-txt: #6a6a6a;
     --filled-color: #4f4f63;
@@ -182,6 +184,14 @@ nav {
     cursor: pointer;
 }
 
+#btn-level:hover, #btn-continue:hover {
+    background-color: var(--bg-main-opacity);
+}
+
+#btn-play:hover {
+    background-color: hsla(196, 100%, 47%, 0.586);
+}
+
 .btn-blue {
     background-color: var(--blue);
     color: var(--white);
@@ -275,6 +285,7 @@ nav {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 10px;
+    cursor: pointer;
 }
 
 .main-game-info-box {
@@ -294,6 +305,7 @@ nav {
     justify-content: center;
     padding-left: 2rem;
     margin-bottom: auto;
+    cursor: pointer;
 }
 
 .pause-btn {
@@ -308,6 +320,22 @@ nav {
     display: grid;
     place-items: center;
     cursor: pointer;
+}
+
+.pause-btn:hover {
+    background-color: hsla(196, 100%, 47%, 0.57);
+}
+
+.pause-btn:active {
+    background-color: hsla(196, 100%, 47%, 0.263);
+}
+
+#btn-resume:hover {
+    background-color: hsla(196, 100%, 47%, 0.586);
+}
+
+#btn-new-game:hover {
+    background-color: var(--bg-main-opacity);
 }
 
 .numbers {
@@ -328,6 +356,10 @@ nav {
     cursor: pointer;
 }
 
+.number:hover {
+    background-color: var(--bg-main-opacity);
+}
+
 .delete {
     background-color: var(--red);
     color: var(--white);
@@ -337,6 +369,10 @@ nav {
     place-items: center;
     font-size: var(--font-size);
     cursor: pointer;
+}
+
+.delete:hover {
+    background-color: hsla(340, 82%, 52%, 0.629);;
 }
 
 .pause-screen,
