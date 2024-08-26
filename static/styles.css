@@ -477,6 +477,10 @@ nav {
         --font-size-xl: 2rem;
     }
 
+    body {
+        height: 80vh;
+    }
+
     .input-name,
     .btn {
         height: 50px;
