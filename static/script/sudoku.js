@@ -2,42 +2,47 @@ const newGrid = (size) => {
     let arr = new Array(size);
 
     for (let i = 0; i < size; i++) {
-        arr[i] = new Array(size);  
+        arr[i] = new Array(size);
     }
 
     for (let i = 0; i < Math.pow(size, 2); i++) {
-        arr[Math.floor(i/size)][i%size] = CONSTANTS.UNASSIGNED;
+        arr[Math.floor(i / size)][i % size] = CONSTANTS.UNASSIGNED;
     }
 
     return arr;
 }
 
-const isColSafe = (grid, col, value) => {
-    for (let row = 0; row < CONSTANTS.GRID_SIZE; row++) {
-        if (grid[row][col] === value) return false;
-    }
-    return true;
-}
-
-const isRowSafe = (grid, row, value) => {
-    for (let col = 0; col < CONSTANTS.GRID_SIZE; col++) {
-        if (grid[row][col] === value) return false;
-    }
-    return true;
-}
-
-const isBoxSafe = (grid, box_row, box_col, value) => {
-    for (let row = 0; row < CONSTANTS.BOX_SIZE; row++) {
-        for (let col = 0; col < CONSTANTS.BOX_SIZE; col++) {
-            if (grid[row + box_row][col + box_col] === value) return false;
+const isSafe = (grid, row, col, num) => {
+    // row
+    for (let x = 0; x < CONSTANTS.GRID_SIZE; x++) {
+        if (grid[row][x] === num && x !== col) {
+            return false;
         }
     }
-    return true;
-}
 
-const isSafe = (grid, row, col, value) => {
-    return isColSafe(grid, col, value) && isRowSafe(grid, row, value) && isBoxSafe(grid, row - row%3, col - col%3, value) && value !== CONSTANTS.UNASSIGNED;
-}
+    // column
+    for (let x = 0; x < CONSTANTS.GRID_SIZE; x++) {
+        if (grid[x][col] === num && x !== row) {
+            return false;
+        }
+    }
+
+    // 3x3 box
+    let startRow = row - row % CONSTANTS.BOX_SIZE;
+    let startCol = col - col % CONSTANTS.BOX_SIZE;
+    for (let i = 0; i < CONSTANTS.BOX_SIZE; i++) {
+        for (let j = 0; j < CONSTANTS.BOX_SIZE; j++) {
+            if (
+                grid[i + startRow][j + startCol] === num &&
+                (i + startRow !== row || j + startCol !== col)
+            ) {
+                return false;
+            }
+        }
+    }
+
+    return true;
+};
 
 const findUnassignedPos = (grid, pos) => {
     for (let row = 0; row < CONSTANTS.GRID_SIZE; row++) {

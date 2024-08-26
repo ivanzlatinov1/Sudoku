@@ -354,7 +354,7 @@ nav {
 }
 
 .pause-screen.active,
-.result-screen:active {
+.result-screen.active {
     display: flex;
 }
 

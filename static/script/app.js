@@ -108,8 +108,6 @@ const initializeSudoku = () => {
     seconds = 0;
     saveGameInfo();
 
-    console.table(sudokuAnswer);
-
     for (let i = 0; i < Math.pow(CONSTANTS.GRID_SIZE, 2); i++) {
         let row = Math.floor(i / CONSTANTS.GRID_SIZE);
         let col = i % CONSTANTS.GRID_SIZE;
@@ -299,12 +297,26 @@ const saveGameInfo = () => {
 
 const removeGameInfo = () => {
     localStorage.removeItem('game');
+    gameScreen.classList.remove('active');
     document.querySelector('#btn-continue').style.display = "none";
 }
 
 const isGameWon = () => {
-    sudokuCheck(sudokuAnswer);
-}
+    for (let row = 0; row < CONSTANTS.GRID_SIZE; row++) {
+        for (let col = 0; col < CONSTANTS.GRID_SIZE; col++) {
+            let value = sudokuAnswer[row][col];
+
+            if (value === CONSTANTS.UNASSIGNED || !isSafe(sudokuAnswer, row, col, value)) {
+                return false;
+            }
+        }
+    }
+    console.log("Game won!");
+    return true;
+};
+
+
+
 
 const showResult = () => {
     clearInterval(timer);
