@@ -2,53 +2,44 @@ const newGrid = (size) => {
     let arr = new Array(size);
 
     for (let i = 0; i < size; i++) {
-        arr[i] = new Array(size);
+        arr[i] = new Array(size);  
     }
 
     for (let i = 0; i < Math.pow(size, 2); i++) {
-        arr[Math.floor(i / size)][i % size] = CONSTANTS.UNASSIGNED;
+        arr[Math.floor(i/size)][i%size] = CONSTANTS.UNASSIGNED;
     }
 
     return arr;
 }
 
-const isColumnCorrect = (grid, col, value) => {
+const isColSafe = (grid, col, value) => {
     for (let row = 0; row < CONSTANTS.GRID_SIZE; row++) {
-        if (grid[row][col] === value) {
-            return false;
-        }
-        return true;
+        if (grid[row][col] === value) return false;
     }
+    return true;
 }
 
-const isRowCorrect = (grid, row, value) => {
+const isRowSafe = (grid, row, value) => {
     for (let col = 0; col < CONSTANTS.GRID_SIZE; col++) {
-        if (grid[row][col] === value) {
-            return false;
-        }
-        return true;
+        if (grid[row][col] === value) return false;
     }
+    return true;
 }
 
-const is3x3BoxCorrect = (grid, boxRow, boxCol, value) => {
+const isBoxSafe = (grid, box_row, box_col, value) => {
     for (let row = 0; row < CONSTANTS.BOX_SIZE; row++) {
         for (let col = 0; col < CONSTANTS.BOX_SIZE; col++) {
-            if (grid[row + boxRow][col + boxCol] === value) {
-                return false;
-            }
+            if (grid[row + box_row][col + box_col] === value) return false;
         }
     }
     return true;
 }
 
-const isCorrect = (grid, row, col, value) => {
-    return isColumnCorrect(grid, col, value)
-        && isRowCorrect(grid, row, value)
-        && is3x3BoxCorrect(grid, row - row % 3, col - col % 3, value)
-        && value !== CONSTANTS.UNASSIGNED;
+const isSafe = (grid, row, col, value) => {
+    return isColSafe(grid, col, value) && isRowSafe(grid, row, value) && isBoxSafe(grid, row - row%3, col - col%3, value) && value !== CONSTANTS.UNASSIGNED;
 }
 
-const findUnassignedCell = (grid, pos) => {
+const findUnassignedPos = (grid, pos) => {
     for (let row = 0; row < CONSTANTS.GRID_SIZE; row++) {
         for (let col = 0; col < CONSTANTS.GRID_SIZE; col++) {
             if (grid[row][col] === CONSTANTS.UNASSIGNED) {
@@ -62,21 +53,21 @@ const findUnassignedCell = (grid, pos) => {
 }
 
 const shuffleArray = (arr) => {
-    let currentIndex = arr.length;
+    let curr_index = arr.length;
 
-    while (currentIndex !== 0) {
-        let randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex -= 1;
+    while (curr_index !== 0) {
+        let rand_index = Math.floor(Math.random() * curr_index);
+        curr_index -= 1;
 
-        let temp = arr[currentIndex];
-        arr[currentIndex] = arr[randomIndex];
-        arr[randomIndex] = temp;
+        let temp = arr[curr_index];
+        arr[curr_index] = arr[rand_index];
+        arr[rand_index] = temp;
     }
 
     return arr;
 }
 
-const isGameSuccessful = (grid) => {
+const isFullGrid = (grid) => {
     return grid.every((row, i) => {
         return row.every((value, j) => {
             return value !== CONSTANTS.UNASSIGNED;
@@ -85,26 +76,25 @@ const isGameSuccessful = (grid) => {
 }
 
 const sudokuCreate = (grid) => {
-    let unassignedPos = {
+    let unassigned_pos = {
         row: -1,
         col: -1
     }
-    if (!findUnassignedCell(grid, unassignedPos)) {
-        return true;
-    }
 
-    let numberList = shuffleArray([...CONSTANTS.NUMBERS]);
-    let row = unassignedPos.row;
-    let col = unassignedPos.col;
+    if (!findUnassignedPos(grid, unassigned_pos)) return true;
 
-    numberList.forEach((num, i) => {
-        if (isCorrect(grid, row, col, num)) {
+    let number_list = shuffleArray([...CONSTANTS.NUMBERS]);
+
+    let row = unassigned_pos.row;
+    let col = unassigned_pos.col;
+
+    number_list.forEach((num, i) => {
+        if (isSafe(grid, row, col, num)) {
             grid[row][col] = num;
 
-            if (isGameSuccessful(grid)) {
+            if (isFullGrid(grid)) {
                 return true;
-            }
-            else {
+            } else {
                 if (sudokuCreate(grid)) {
                     return true;
                 }
@@ -114,54 +104,48 @@ const sudokuCreate = (grid) => {
         }
     });
 
-    return isGameSuccessful(grid);
+    return isFullGrid(grid);
 }
 
 const sudokuCheck = (grid) => {
-    let unassignedPos = {
+    let unassigned_pos = {
         row: -1,
         col: -1
     }
-    if (!findUnassignedCell(grid, unassignedPos)) {
-        return true;
-    }
+
+    if (!findUnassignedPos(grid, unassigned_pos)) return true;
 
     grid.forEach((row, i) => {
         row.forEach((num, j) => {
-            if (isCorrect(grid, i, j, num)) {
-
-                if (isGameSuccessful(grid)) {
+            if (isSafe(grid, i, j, num)) {
+                if (isFullGrid(grid)) {
                     return true;
-                }
-                else {
+                } else {
                     if (sudokuCreate(grid)) {
                         return true;
                     }
                 }
             }
         })
-    });
+    })
 
-    return isGameSuccessful(grid);
+    return isFullGrid(grid);
 }
 
-const rand = () => {
-   return Math.floor(Math.random() * CONSTANTS.GRID_SIZE);
-}
+const rand = () => Math.floor(Math.random() * CONSTANTS.GRID_SIZE);
 
 const removeCells = (grid, level) => {
     let res = [...grid];
-    let attempts = level;
-    while(attempts > 0) {
+    let attemps = level;
+    while (attemps > 0) {
         let row = rand();
         let col = rand();
-        while(res[row][col] === 0)
-        {
+        while (res[row][col] === 0) {
             row = rand();
             col = rand();
         }
         res[row][col] = CONSTANTS.UNASSIGNED;
-        attempts--;
+        attemps--;
     }
     return res;
 }
@@ -169,7 +153,7 @@ const removeCells = (grid, level) => {
 const generateSudoku = (level) => {
     let sudoku = newGrid(CONSTANTS.GRID_SIZE);
     let check = sudokuCreate(sudoku);
-    if(check) {
+    if (check) {
         let question = removeCells(sudoku, level);
         return {
             original: sudoku,
