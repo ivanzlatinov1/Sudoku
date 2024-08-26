@@ -417,7 +417,7 @@ document.querySelector('#btn-new-game-2').addEventListener('click', () => {
 });
 
 document.querySelector('#btn-delete').addEventListener('click', () => {
-    cells[selectedCell].innerHTML = '';
+    cells[selectedCell].textContent = '';
     cells[selectedCell].setAttribute('data-value', 0);
     let row = Math.floor(selectedCell / CONSTANTS.GRID_SIZE);
     let col = selectedCell % CONSTANTS.GRID_SIZE;

@@ -46,6 +46,12 @@ body {
     background-color: var(--bg-body);
     user-select: none;
     overflow: hidden;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
 }
 
 input {
@@ -184,7 +190,8 @@ nav {
     cursor: pointer;
 }
 
-#btn-level:hover, #btn-continue:hover {
+#btn-level:hover,
+#btn-continue:hover {
     background-color: var(--bg-main-opacity);
 }
 
@@ -372,7 +379,8 @@ nav {
 }
 
 .delete:hover {
-    background-color: hsla(340, 82%, 52%, 0.629);;
+    background-color: hsla(340, 82%, 52%, 0.629);
+    ;
 }
 
 .pause-screen,
@@ -455,8 +463,8 @@ nav {
 
 @media only screen and (max-width: 800px) {
     :root {
-        --nav-size: 50px;
-        --sudoku-cell-size: 26px;
+        --nav-size: 90px;
+        --sudoku-cell-size: 30px;
 
         --border-radius: 5px;
 
@@ -469,11 +477,17 @@ nav {
         --font-size-xl: 2rem;
     }
 
-    .input-name, .btn {
+    .input-name,
+    .btn {
         height: 50px;
     }
 
     .main-grid-cell.hover {
         border-width: 2px;
     }
+
+    .screen {
+        min-width: unset;
+    }
+
 }
