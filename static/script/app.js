@@ -27,13 +27,12 @@ let sudokuAnswer = undefined;
 const getGameInfo = () => JSON.parse(localStorage.getItem('game'));
 
 const createCells = () => {
-   const sudokuGrid = document.querySelector('.main-sudoku-grid');
-   for(let i = 1; i <= 81; i++)
-   {
+    const sudokuGrid = document.querySelector('.main-sudoku-grid');
+    for (let i = 1; i <= 81; i++) {
         const cell = document.createElement('div');
         cell.classList.add('main-grid-cell');
         sudokuGrid.appendChild(cell);
-   }
+    }
 }
 
 createCells();
@@ -41,16 +40,13 @@ const cells = document.querySelectorAll('.main-grid-cell');
 
 const initializeGameGrid = () => {
     let index = 0;
-    for(let i = 0; i < Math.pow(CONSTANTS.GRID_SIZE, 2); i++)
-    {
+    for (let i = 0; i < Math.pow(CONSTANTS.GRID_SIZE, 2); i++) {
         let row = Math.floor(i / CONSTANTS.GRID_SIZE);
         let col = i % CONSTANTS.GRID_SIZE;
-        if(row  === 2 || row === 5)
-        {
+        if (row === 2 || row === 5) {
             cells[index].style.marginBottom = '10px';
         }
-        if(col === 2 || col === 5)
-        {
+        if (col === 2 || col === 5) {
             cells[index].style.marginRight = '10px';
         }
 
@@ -60,8 +56,7 @@ const initializeGameGrid = () => {
 
 const initializeNumbers = () => {
     const numsDiv = document.querySelector('.numbers');
-    for(let i = 0; i < 9; i++)
-    {
+    for (let i = 0; i < 9; i++) {
         const num = document.createElement('div');
         num.classList.add('number');
         num.textContent = i + 1;
@@ -85,11 +80,11 @@ const getPlayerName = () => {
 }
 
 const showTime = (seconds) => {
-   return new Date(seconds * 1000).toISOString().substr(11, 8);
+    return new Date(seconds * 1000).toISOString().substr(11, 8);
 }
 
 const clearSudoku = () => {
-    for(let i = 0; i < Math.pow(CONSTANTS.GRID_SIZE, 2); i++) {
+    for (let i = 0; i < Math.pow(CONSTANTS.GRID_SIZE, 2); i++) {
         cells[i].innerHTML = '';
         cells[i].classList.remove('filled');
         cells[i].classList.remove('selected');
@@ -98,19 +93,20 @@ const clearSudoku = () => {
 
 const initializeSudoku = () => {
     clearSudoku();
+    resetBackground();
 
     sudokuGame = generateSudoku(level);
     sudokuAnswer = [...sudokuGame.question];
 
     console.table(sudokuAnswer);
 
-    for(let i = 0; i < Math.pow(CONSTANTS.GRID_SIZE, 2); i++) {
+    for (let i = 0; i < Math.pow(CONSTANTS.GRID_SIZE, 2); i++) {
         let row = Math.floor(i / CONSTANTS.GRID_SIZE);
         let col = i % CONSTANTS.GRID_SIZE;
 
         cells[i].setAttribute('data-value', sudokuGame.question[row][col]);
 
-        if(sudokuGame.question[row][col] !== 0) {
+        if (sudokuGame.question[row][col] !== 0) {
             cells[i].classList.add('filled');
             cells[i].innerHTML = sudokuGame.question[row][col];
         }
@@ -130,12 +126,70 @@ const startGame = () => {
     showTime(seconds);
 
     timer = setInterval(() => {
-        if(!pause)
-        {
+        if (!pause) {
             seconds += 1;
             gameTime.innerHTML = showTime(seconds);
         }
     }, 1000)
+}
+
+const hoverBackground = (index) => {
+    let row = Math.floor(index / CONSTANTS.GRID_SIZE);
+    let col = index % CONSTANTS.GRID_SIZE;
+
+    let boxStartRow = row - row % 3;
+    let boxStartCol = col - col % 3;
+
+    for (let i = 0; i < CONSTANTS.BOX_SIZE; i++) {
+        for (let j = 0; j < CONSTANTS.BOX_SIZE; j++) {
+            let cell = cells[9 * (boxStartRow + i) + (boxStartCol + j)];
+            cell.classList.add('hover');
+        }
+    }
+
+    let step = 9;
+    while (index - step >= 0) {
+        cells[index - step].classList.add('hover');
+        step += 9;
+    }
+
+    step = 9;
+    while (index + step < 81) {
+        cells[index + step].classList.add('hover');
+        step += 9;
+    }
+
+    step = 1;
+    while (index - step >= row * 9) {
+        cells[index - step].classList.add('hover');
+        step += 1;
+    }
+
+    step = 1;
+    while (index + step < row * 9 + 9) {
+        cells[index + step].classList.add('hover');
+        step += 1;
+    }
+}
+
+const resetBackground = () => {
+    cells.forEach(el => el.classList.remove('hover'));
+}
+
+const initCellsEvent = () => {
+    cells.forEach((el, index) => {
+        el.addEventListener('click', () => {
+            if(el.classList.contains('filled')) {
+                cells.forEach(el => el.classList.remove('selected'));
+
+                selectedCell = index;
+                el.classList.remove('err');
+                el.classList.add('selected');
+                resetBackground();
+                hoverBackground(index);
+            }
+        });
+    });
 }
 
 const returnToStartScreen = () => {
@@ -154,13 +208,11 @@ document.querySelector('#btn-level').addEventListener('click', (event) => {
 })
 
 document.querySelector('#btn-play').addEventListener('click', () => {
-    if(nameInput.value.trim().length > 0)
-    {
+    if (nameInput.value.trim().length > 0) {
         initializeSudoku();
         startGame();
     }
-    else
-    {
+    else {
         nameInput.classList.add('input-err');
         setTimeout(() => {
             nameInput.classList.remove('input-err');
@@ -194,6 +246,7 @@ const initialize = () => {
 
     initializeGameGrid();
     initializeNumbers();
+    initCellsEvent();
 }
 
 initialize();
