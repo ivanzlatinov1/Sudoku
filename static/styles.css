@@ -145,15 +145,15 @@ nav {
     transform: translateX(0);
 }
 
-.start-screen > * + * {
+.start-screen>*+* {
     margin-top: 20px;
 }
 
-.pause-screen > * + * {
+.pause-screen>*+* {
     margin-top: 20px;
 }
 
-.result-screen > * + * {
+.result-screen>*+* {
     margin-top: 20px;
 }
 
@@ -339,7 +339,8 @@ nav {
     cursor: pointer;
 }
 
-.pause-screen, .result-screen {
+.pause-screen,
+.result-screen {
     position: absolute;
     top: 0;
     left: 0;
@@ -352,7 +353,8 @@ nav {
     display: none;
 }
 
-.pause-screen.active, .result-screen:active {
+.pause-screen.active,
+.result-screen:active {
     display: flex;
 }
 
@@ -375,7 +377,7 @@ nav {
     animation: zoom 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.pause-screen.active .btn{
+.pause-screen.active .btn {
     animation: zoom 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
@@ -387,6 +389,7 @@ nav {
     0% {
         transform: scale(3);
     }
+
     100% {
         transform: scale(1);
     }
@@ -411,5 +414,30 @@ nav {
 
     100% {
         transform: scale(1);
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    :root {
+        --nav-size: 50px;
+        --sudoku-cell-size: 26px;
+
+        --border-radius: 5px;
+
+        --space-y: 10px;
+
+        --gap: 2px;
+
+        --font-size: 1rem;
+        --font-size-lg: 1.5rem;
+        --font-size-xl: 2rem;
+    }
+
+    .input-name, .btn {
+        height: 50px;
+    }
+
+    .main-grid-cell.hover {
+        border-width: 2px;
     }
 }
