@@ -5,14 +5,17 @@ document.getElementById("dark-mode").addEventListener('click', () => {
     document.querySelector('meta[name="theme-color"]').setAttribute('content', isDarkMode ? '#1a1a2e' : '#fff');
 });
 
-const nameInput = document.querySelector('#input-name');
 const startScreen = document.querySelector('#start-screen');
 const gameScreen = document.querySelector('#game-screen');
 const pauseScreen = document.querySelector('#pause-screen')
+const resultScreen = document.querySelector('#result-screen');
 
+const nameInput = document.querySelector('#input-name');
 const playerName = document.querySelector('#player-name');
 const gameLevel = document.querySelector('#game-level');
 const gameTime = document.querySelector('#game-time');
+
+const resultTime = document.querySelector('#result-time');
 
 let levelIndex = 0;
 let level = CONSTANTS.LEVEL[levelIndex];
@@ -305,7 +308,8 @@ const isGameWon = () => {
 
 const showResult = () => {
     clearInterval(timer);
-    alert('win');
+    resultScreen.classList.add('active');
+    resultTime.innerHTML = showTime(seconds);
 }
 
 const numberInputs = document.querySelectorAll('.number');
@@ -346,6 +350,7 @@ const returnToStartScreen = () => {
     startScreen.classList.add('active');
     gameScreen.classList.remove('active');
     pauseScreen.classList.remove('active');
+    resultScreen.classList.remove('active');
 }
 
 document.querySelector('#btn-level').addEventListener('click', (event) => {
@@ -392,6 +397,10 @@ document.querySelector('#btn-resume').addEventListener('click', () => {
 });
 
 document.querySelector('#btn-new-game').addEventListener('click', () => {
+    returnToStartScreen();
+});
+
+document.querySelector('#btn-new-game-2').addEventListener('click', () => {
     returnToStartScreen();
 });
 
