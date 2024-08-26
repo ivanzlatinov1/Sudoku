@@ -51,7 +51,6 @@ const initializeNumbers = () => {
     }
 
     const btnDelete = document.createElement('div');
-    btnDelete.classList.add('number');
     btnDelete.classList.add('delete');
     btnDelete.id = 'btn-delete';
     btnDelete.textContent = 'X';
@@ -252,12 +251,39 @@ const checkError = (value) => {
 
 const removeError = () => cells.forEach(el => el.classList.remove('err'));
 
+const saveGameInfo = () => {
+    let game = {
+        level: levelIndex,
+        seconds: seconds,
+        sudokuGame: {
+            original: sudokuGame.original,
+            question: sudokuGame.question,
+            answer: sudokuAnswer
+        }
+    }
+    localStorage.setItem('game', JSON.stringify(game));
+}
+
+const removeGameInfo = () => {
+    localStorage.removeItem('game');
+    document.querySelector('#btn-continue').style.display = "none";
+}
+
+const isGameWon = () => {
+    sudokuCheck(sudokuAnswer);
+}
+
+const showResult = () => {
+    clearInterval(timer);
+    alert('win');
+}
+
 const numberInputs = document.querySelectorAll('.number');
 
 const initializeNumbersInputEvent = () => {
     numberInputs.forEach((el, index) => {
         el.addEventListener('click', () => {
-            if(!cells[selectedCell].classList.contains('filled')) {
+            if (!cells[selectedCell].classList.contains('filled')) {
                 cells[selectedCell].innerHTML = index + 1;
                 cells[selectedCell].setAttribute('data-value', index + 1);
 
@@ -272,7 +298,10 @@ const initializeNumbersInputEvent = () => {
                     cells[selectedCell].classList.remove('zoom');
                 }, 500);
 
-
+                if (isGameWon()) {
+                    removeGameInfo();
+                    showResult();
+                }
             }
         });
     });
@@ -321,6 +350,16 @@ document.querySelector('#btn-new-game').addEventListener('click', () => {
     returnToStartScreen();
 });
 
+document.querySelector('#btn-delete').addEventListener('click', () => {
+    cells[selectedCell].innerHTML = '';
+    cells[selectedCell].setAttribute('data-value', 0);
+    let row = Math.floor(selectedCell / CONSTANTS.GRID_SIZE);
+    let col = selectedCell % CONSTANTS.GRID_SIZE;
+
+    sudokuAnswer[row][col] = 0;
+    removeError();
+});
+
 const initialize = () => {
     const darkMode = JSON.parse(localStorage.getItem('darkmode'));
     document.body.classList.add(darkMode ? 'dark' : 'light');
@@ -334,7 +373,7 @@ const initialize = () => {
     initCellsEvent();
     initializeNumbersInputEvent();
 
-    if(getPlayerName()) {
+    if (getPlayerName()) {
         nameInput.value = getPlayerName();
     }
     else {

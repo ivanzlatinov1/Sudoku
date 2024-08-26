@@ -327,6 +327,12 @@ nav {
 .delete {
     background-color: var(--red);
     color: var(--white);
+    height: var(--sudoku-cell-size);
+    border-radius: var(--border-radius);
+    display: grid;
+    place-items: center;
+    font-size: var(--font-size);
+    cursor: pointer;
 }
 
 .pause-screen {
