@@ -5,6 +5,7 @@
     --color-txt: #000;
     --filled-color: #000;
     --filled-bg: #caf0f8;
+    --filled-bg-transparent: #caf0f8a2;
 
     --white: #fff;
     --blue: #00aeef;
@@ -32,6 +33,7 @@
     --color-txt: #6a6a6a;
     --filled-color: #4f4f63;
     --filled-bg: #000;
+    --filled-bg-transparent: #00000025;
 }
 
 * {
@@ -427,6 +429,20 @@ nav {
 
 .zoom {
     animation: zoom 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.main-grid-cell.filled.marked {
+    font-size: 1.9rem;
+    color: hsla(314, 52%, 51%, 0.745);
+    background-color: var(--filled-bg-transparent);
+    transition: font-size 0.5s ease, color 0.5s ease, background-color 0.5s ease;
+}
+
+body.dark .main-grid-cell.filled.marked {
+    font-size: 1.9rem;
+    color: yellow;
+    background-color: var(--filled-bg-transparent);
+    transition: font-size 0.5s ease, color 0.5s ease, background-color 0.5s ease;
 }
 
 @keyframes zoom {

@@ -138,7 +138,7 @@ const loadSudoku = () => {
     for (let i = 0; i < Math.pow(CONSTANTS.GRID_SIZE, 2); i++) {
         let row = Math.floor(i / CONSTANTS.GRID_SIZE);
         let col = i % CONSTANTS.GRID_SIZE;
-        
+
         cells[i].setAttribute('data-value', sudokuAnswer[row][col]);
         cells[i].innerHTML = sudokuAnswer[row][col] !== 0 ? sudokuAnswer[row][col] : '';
         if (sudokuGame.question[row][col] !== 0) {
@@ -444,10 +444,31 @@ document.addEventListener('click', (event) => {
     }
 });
 
-numberInputs.forEach((el) => 
-    {
-        el.addEventListener('click', () => console.log(el.innerHTML))
-    })
+numberInputs.forEach((el) => {
+    el.addEventListener('click', () => {
+        const selectedNumber = el.innerHTML;
+
+        cells.forEach((cell) => {
+            if (cell.getAttribute('data-value') == selectedNumber) {
+                cell.classList.toggle('marked');
+            } else {
+                cell.classList.remove('marked');
+            }
+        });
+    });
+});
+
+document.addEventListener('click', (event) => {
+    const isClickInsideNumbers = Array.from(numberInputs).some(el => el.contains(event.target));
+    const isClickInsideCells = Array.from(cells).some(cell => cell.contains(event.target));
+
+    if (!isClickInsideNumbers && !isClickInsideCells) {
+        cells.forEach(cell => {
+            cell.classList.remove('marked');
+        });
+    }
+});
+
 
 const initialize = () => {
     const darkMode = JSON.parse(localStorage.getItem('darkmode'));
