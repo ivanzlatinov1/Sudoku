@@ -433,7 +433,8 @@ nav {
 
 .main-grid-cell.filled.marked {
     font-size: 1.9rem;
-    color: hsla(314, 52%, 51%, 0.745);
+    color: hsl(314, 52%, 51%);
+    text-shadow: 1px 1px 2px rgb(255, 86, 244);
     background-color: var(--filled-bg-transparent);
     transition: font-size 0.5s ease, color 0.5s ease, background-color 0.5s ease;
 }
@@ -495,6 +496,14 @@ body.dark .main-grid-cell.filled.marked {
 
     body {
         height: 80vh;
+    }
+
+    .main-grid-cell.filled.marked {
+        font-size: 1rem;
+    }
+
+    body.dark .main-grid-cell.filled.marked {
+        font-size: 1rem;
     }
 
     .input-name,
