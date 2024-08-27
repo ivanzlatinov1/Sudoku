@@ -426,6 +426,19 @@ document.querySelector('#btn-delete').addEventListener('click', () => {
     removeError();
 });
 
+document.addEventListener('click', (event) => {
+    const gameScreen = document.querySelector('#game-screen');
+
+    if (!gameScreen.contains(event.target)) {
+        resetBackground();
+
+        cells.forEach(cell => cell.classList.remove('selected'));
+
+        selectedCell = -1;
+    }
+});
+
+
 const initialize = () => {
     const darkMode = JSON.parse(localStorage.getItem('darkmode'));
     document.body.classList.add(darkMode ? 'dark' : 'light');
