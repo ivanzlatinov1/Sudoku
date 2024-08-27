@@ -329,7 +329,7 @@ const numberInputs = document.querySelectorAll('.number');
 const initializeNumbersInputEvent = () => {
     numberInputs.forEach((el, index) => {
         el.addEventListener('click', () => {
-            if (!cells[selectedCell].classList.contains('filled')) {
+            if (selectedCell != -1 && !cells[selectedCell].classList.contains('filled')) {
                 cells[selectedCell].innerHTML = index + 1;
                 cells[selectedCell].setAttribute('data-value', index + 1);
 
@@ -375,6 +375,7 @@ document.querySelector('#btn-play').addEventListener('click', () => {
     if (nameInput.value.trim().length > 0) {
         initializeSudoku();
         startGame();
+        initCellsEvent();
     }
     else {
         nameInput.classList.add('input-err');
@@ -389,6 +390,7 @@ document.querySelector('#btn-continue').addEventListener('click', () => {
     if (nameInput.value.trim().length > 0) {
         loadSudoku();
         startGame();
+        initCellsEvent();
     } else {
         nameInput.classList.add('input-err');
         setTimeout(() => {
@@ -417,13 +419,17 @@ document.querySelector('#btn-new-game-2').addEventListener('click', () => {
 });
 
 document.querySelector('#btn-delete').addEventListener('click', () => {
-    cells[selectedCell].textContent = '';
+    cells[selectedCell].innerHTML = '';
     cells[selectedCell].setAttribute('data-value', 0);
     let row = Math.floor(selectedCell / CONSTANTS.GRID_SIZE);
     let col = selectedCell % CONSTANTS.GRID_SIZE;
 
     sudokuAnswer[row][col] = 0;
     removeError();
+    saveGameInfo();
+
+    cells[selectedCell].classList.remove('selected');
+    selectedCell = -1;
 });
 
 document.addEventListener('click', (event) => {
@@ -438,6 +444,10 @@ document.addEventListener('click', (event) => {
     }
 });
 
+numberInputs.forEach((el) => 
+    {
+        el.addEventListener('click', () => console.log(el.innerHTML))
+    })
 
 const initialize = () => {
     const darkMode = JSON.parse(localStorage.getItem('darkmode'));
